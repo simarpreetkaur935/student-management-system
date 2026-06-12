@@ -69,7 +69,7 @@ const UpdateStudent = () => {
     return (
         <div>
             <form onSubmit={submitHandler}>
-                <img src={location.state[1].imageUrl} width="100" height="100"/>
+                <img src={location.state[1].imageUrl} alt="student" width="100" height="100"/>
                 <input disabled value={admNo} onChange={(e) => setAdmNo(e.target.value)} type='text' placeholder='admNo' />
                 <input value={name} onChange={(e) => setName(e.target.value)} type='text' placeholder='student name' />
                 <input value={phone} onChange={(e) => setPhone(e.target.value)} type='number' placeholder='phone' />
