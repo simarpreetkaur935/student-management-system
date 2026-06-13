@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
       const[email,setEmail] = useState('');
       const[password,setPassword] = useState('');
-      const[phone,setPhone] = useState(null);
+      const[phone,setPhone] = useState('');
       const[isotp,setIsotp] = useState(false);
       const[code,setCode] = useState('');
       const navigate = useNavigate()
@@ -65,20 +65,30 @@ const Login = () => {
                 console.log(err)
             })
         }
-        const sendOtp =()=>{
-            const auth = getAuth(app)
-           const appVerifier = new RecaptchaVerifier('abc',{ size: 'normal'},auth);
-            signInWithPhoneNumber(auth,phone,appVerifier)
-            .then(res=>{
-                console.log(res)
-                window.confirmationResult = res;
-                console.log('otp sent')
-                setIsotp(true);
-            })
-            .catch(err=>{
-                console.log(err)
-            })
-        }
+    const sendOtp = () => {
+  const auth = getAuth(app);
+
+  window.recaptchaVerifier = new RecaptchaVerifier(
+    auth,
+    "abc",
+    {
+      size: "normal"
+    }
+  );
+
+  const appVerifier = window.recaptchaVerifier;
+
+  signInWithPhoneNumber(auth, phone, appVerifier)
+    .then((res) => {
+      console.log(res);
+      window.confirmationResult = res;
+      console.log("OTP sent");
+      setIsotp(true);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
         const confirmOtp=()=>{
             window.confirmationResult.confirm(code)
             .then(res=>{
