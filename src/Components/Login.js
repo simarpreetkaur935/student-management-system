@@ -67,7 +67,7 @@ const Login = () => {
         }
         const sendOtp =()=>{
             const auth = getAuth(app)
-            const appVerifier = new RecaptchaVerifier(auth,'abc',{})
+           const appVerifier = new RecaptchaVerifier('abc',{ size: 'normal'},auth);
             signInWithPhoneNumber(auth,phone,appVerifier)
             .then(res=>{
                 console.log(res)
@@ -115,7 +115,7 @@ const Login = () => {
                  <div>
                     <h3>confirm otp</h3>
                     <input type='text' onChange={(e)=>{setCode(e.target.value)}}/>
-                    <button type='button' onclick={confirmOtp}>Submit OTP</button>
+                    <button type='button' onClick={confirmOtp}>Submit OTP</button>
                     </div>
 }
       </div>
