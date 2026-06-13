@@ -79,6 +79,7 @@ const Login = () => {
   const appVerifier = window.recaptchaVerifier;
 
   signInWithPhoneNumber(auth, phone, appVerifier)
+     
     .then((res) => {
       console.log(res);
       window.confirmationResult = res;
@@ -87,8 +88,8 @@ const Login = () => {
     })
     .catch((err) => {
       console.log(err);
-    });
-};
+    })
+}
         const confirmOtp=()=>{
             window.confirmationResult.confirm(code)
             .then(res=>{
