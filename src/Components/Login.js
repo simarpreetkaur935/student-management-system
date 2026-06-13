@@ -1,14 +1,17 @@
 import React from 'react'
 import { useState } from 'react'
-import {getAuth,signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,FacebookAuthProvider,GithubAuthProvider, signInWithPhoneNumber} from 'firebase/auth'
+import {getAuth,signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,FacebookAuthProvider,GithubAuthProvider, signInWithPhoneNumber,RecaptchaVerifier} from 'firebase/auth'
 import {app} from '../Firebase'
 import { useNavigate } from 'react-router-dom';
+
 
 
 const Login = () => {
       const[email,setEmail] = useState('');
       const[password,setPassword] = useState('');
       const[phone,setPhone] = useState(null);
+      const[isotp,setIsotp] = useState(false);
+      const[code,setCode] = useState('');
       const navigate = useNavigate()
   
       const submitHandler=(event)=>{
@@ -64,14 +67,26 @@ const Login = () => {
         }
         const sendOtp =()=>{
             const auth = getAuth(app)
-            const appVerifier = window.recaptchaVerifier;
-            signInWithPhoneNumber(phone,auth,appVerifier)
+            const appVerifier = new RecaptchaVerifier(auth,'abc',{})
+            signInWithPhoneNumber(auth,phone,appVerifier)
             .then(res=>{
                 console.log(res)
+                window.confirmationResult = res;
                 console.log('otp sent')
+                setIsotp(true);
             })
             .catch(err=>{
                 console.log(err)
+            })
+        }
+        const confirmOtp=()=>{
+            window.confirmationResult.confirm(code)
+            .then(res=>{
+                console.log(res)
+                 navigate('/dashboard')
+            })
+            .catch(err=>{
+              console.log(err)
             })
         }
     return (
@@ -88,10 +103,21 @@ const Login = () => {
                   <button type='button' onClick={loginWithGithub}>login with github</button>
                   <br/>
                   <br/>
-                  <h3>login with OTP</h3>
-                  <input  onChange={(e)=>{setPhone(e.target.value)}} placeholder='phone number'/>
-                  <button type='button' onClick={sendOtp}>send otp</button>
           </form>
+          {!isotp?
+          <div>
+                    <h3>login with OTP</h3>
+                  <input  onChange={(e)=>{setPhone(e.target.value)}} placeholder='phone number'/>
+                  <div id='abc'></div>
+                  <button type='button' onClick={sendOtp}>send otp</button>
+                 </div>
+                 :
+                 <div>
+                    <h3>confirm otp</h3>
+                    <input type='text' onChange={(e)=>{setCode(e.target.value)}}/>
+                    <button type='button' onclick={confirmOtp}>Submit OTP</button>
+                    </div>
+}
       </div>
     )
 }
