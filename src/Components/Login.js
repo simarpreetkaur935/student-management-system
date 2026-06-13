@@ -61,6 +61,9 @@ const Login = () => {
                 console.log(err)
             })
         }
+        const sendOtp =()=>{
+            console.log('sending otp')
+        }
     return (
       <div>
           <h1>login</h1>
@@ -73,6 +76,11 @@ const Login = () => {
                <button type='button' onClick={loginWithGoogle}>login with google</button>
                 <button type='button' onClick={loginWithFacebook}>login with facebook</button>
                   <button type='button' onClick={loginWithGithub}>login with github</button>
+                  <br/>
+                  <br/>
+                  <h3>login with OTP</h3>
+                  <input placeholder='phone number'/>
+                  <button type='button' onClick={sendOtp}>send otp</button>
           </form>
       </div>
     )
