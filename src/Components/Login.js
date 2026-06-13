@@ -1,13 +1,14 @@
 import React from 'react'
 import { useState } from 'react'
-import {getAuth,signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,FacebookAuthProvider,GithubAuthProvider} from 'firebase/auth'
+import {getAuth,signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,FacebookAuthProvider,GithubAuthProvider, signInWithPhoneNumber} from 'firebase/auth'
 import {app} from '../Firebase'
 import { useNavigate } from 'react-router-dom';
 
 
 const Login = () => {
-  const[email,setEmail] = useState('');
+      const[email,setEmail] = useState('');
       const[password,setPassword] = useState('');
+      const[phone,setPhone] = useState(null);
       const navigate = useNavigate()
   
       const submitHandler=(event)=>{
@@ -62,7 +63,16 @@ const Login = () => {
             })
         }
         const sendOtp =()=>{
-            console.log('sending otp')
+            const auth = getAuth(app)
+            const appVerifier = window.recaptchaVerifier;
+            signInWithPhoneNumber(phone,auth,appVerifier)
+            .then(res=>{
+                console.log(res)
+                console.log('otp sent')
+            })
+            .catch(err=>{
+                console.log(err)
+            })
         }
     return (
       <div>
@@ -79,7 +89,7 @@ const Login = () => {
                   <br/>
                   <br/>
                   <h3>login with OTP</h3>
-                  <input placeholder='phone number'/>
+                  <input  onChange={(e)=>{setPhone(e.target.value)}} placeholder='phone number'/>
                   <button type='button' onClick={sendOtp}>send otp</button>
           </form>
       </div>
