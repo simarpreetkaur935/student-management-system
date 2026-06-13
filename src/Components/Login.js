@@ -72,7 +72,7 @@ const Login = () => {
               <br/>
                <button type='button' onClick={loginWithGoogle}>login with google</button>
                 <button type='button' onClick={loginWithFacebook}>login with facebook</button>
-                  <button type='button' onClick={loginWithGithub}>login with facebook</button>
+                  <button type='button' onClick={loginWithGithub}>login with github</button>
           </form>
       </div>
     )
